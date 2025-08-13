@@ -97,8 +97,8 @@ function getById($tableName, $id)
         if (mysqli_num_rows($result) == 1) {
             $row = mysqli_fetch_assoc($result);
             $respons = [
-                'status' => 403,
-                'dta' => $row,
+                'status' => 200,
+                'data' => $row,
                 'message' => 'Record Found!'
             ];
             return $respons;
@@ -130,5 +130,21 @@ function delete($tableName, $id)
     $result = mysqli_query($conn, $query);
     return $result;
 }
+
+//  check id function
+
+function checkParamId($type)
+{
+    if (isset($_GET[$type])) {
+        if ($_GET[$type] != '') {
+            return $_GET[$type];
+        } else {
+            return '<h5>No Id Found</h5>';
+        }
+    } else {
+        return '<h5>No Id Given</h5>';
+    }
+}
+
 
 ?>
