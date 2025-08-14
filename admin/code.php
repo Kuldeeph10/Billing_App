@@ -52,12 +52,23 @@ if (isset($_POST['UpdateAdmin'])) {
     $phone = validate($_POST['phone']);
     $is_ban = validate($_POST['is_ban']) == true ? 1 : 0;
 
+    // email already checking 
+    $emailCheckQuery = "SELECT * FROM admins WHERE email='$email' AND id!='$adminId'";
+    $checkResult = mysqli_query($conn,$emailCheckQuery);
+    if($checkResult){
+        if(mysqli_num_rows($checkResult) > 0){
+        redirect('admins-edit.php?id='.$adminId,'Email Already used by another user!');
+        }
+    }
+
+    // password validation 
     if($password != ''){
         $hashedPassword = password_hash($password,PASSWORD_BCRYPT);
     }else{
         $hashedPassword = $adminData['data']['password'];
     }
 
+    //  geting all data in update form from bd
     if ($name != '' && $email != '') {
         $data = [
             'name' => $name,
